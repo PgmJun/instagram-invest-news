@@ -42,6 +42,8 @@ def create_release_and_upload(image_paths: list[str]) -> list[str]:
             )
             upload_resp.raise_for_status()
 
-        urls.append(f"https://github.com/{repo}/releases/download/{tag}/{filename}")
+        github_url = f"https://github.com/{repo}/releases/download/{tag}/{filename}"
+        direct = requests.head(github_url, allow_redirects=True)
+        urls.append(direct.url)
 
     return urls
