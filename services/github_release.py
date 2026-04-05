@@ -8,7 +8,7 @@ def create_release_and_upload(image_paths: list[str]) -> list[str]:
     """GitHub Release를 생성하고 이미지를 Asset으로 업로드한다. 공개 URL 목록을 반환."""
     token = os.environ["GITHUB_TOKEN"]
     repo = os.environ["GITHUB_REPOSITORY"]
-    tag = f"daily-{datetime.now().strftime('%Y-%m-%d')}"
+    tag = f"daily-{datetime.now().strftime('%Y-%m-%d-%H%M')}"
 
     headers = {
         "Authorization": f"Bearer {token}",
