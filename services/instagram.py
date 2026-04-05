@@ -3,7 +3,7 @@ import time
 import requests
 
 
-BASE_URL = "https://graph.facebook.com/v19.0"
+BASE_URL = "https://graph.instagram.com/v25.0"
 
 
 def _post(endpoint: str, params: dict) -> dict:

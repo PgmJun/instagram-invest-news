@@ -9,7 +9,7 @@ BASE_STYLE = """
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
         width: 1080px;
-        height: 1440px;
+        height: 1350px;
         font-family: 'Noto Sans KR', sans-serif;
         overflow: hidden;
     }
@@ -40,7 +40,7 @@ def build_card1_hook(analysis):
 
     return html_doc(f"""
 <div style="
-    width:1080px; height:1440px;
+    width:1080px; height:1350px;
     background: linear-gradient(160deg, #060D1F 0%, #0D1F3C 50%, #091428 100%);
     display:flex; flex-direction:column;
     justify-content:space-between;
@@ -163,7 +163,7 @@ def build_card2_summary(analysis):
 
     return html_doc(f"""
 <div style="
-    width:1080px; height:1440px;
+    width:1080px; height:1350px;
     background: linear-gradient(160deg, #060D1F 0%, #0D1F3C 60%, #091428 100%);
     display:flex; flex-direction:column;
     padding:80px 72px;
@@ -221,7 +221,7 @@ def build_detail_card(detail, card_num=3):
 
     return html_doc(f"""
 <div style="
-    width:1080px; height:1440px;
+    width:1080px; height:1350px;
     background: linear-gradient(160deg, #060D1F 0%, #0D1F3C 60%, #091428 100%);
     display:flex; flex-direction:column;
     padding:80px 72px;
@@ -280,7 +280,7 @@ def build_card6_cta(cta):
 
     return html_doc(f"""
 <div style="
-    width:1080px; height:1440px;
+    width:1080px; height:1350px;
     background: linear-gradient(160deg, #060D1F 0%, #0D1F3C 60%, #091428 100%);
     display:flex; flex-direction:column;
     justify-content:space-between;
@@ -386,7 +386,7 @@ def generate_all_cards(result, output_dir="output"):
         for i, html in enumerate(cards, 1):
             file = base / f"card{i}_{ts}.png"
 
-            page = browser.new_page(viewport={"width": 1080, "height": 1440})
+            page = browser.new_page(viewport={"width": 1080, "height": 1350})
             page.set_content(html)
             page.wait_for_timeout(2000)
             page.screenshot(path=str(file), full_page=False)
