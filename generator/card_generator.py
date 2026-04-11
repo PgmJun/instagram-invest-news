@@ -15,6 +15,10 @@ BASE_STYLE = """
     }
 """
 
+WEEKDAYS = ["월", "화", "수", "목", "금", "토", "일"]
+
+ACCENT_COLORS = ["#FF6B53", "#A78BFA", "#FBBF24", "#34D399", "#F472B6", "#60A5FA", "#FB923C", "#A3E635", "#38BDF8", "#E879F9"]
+
 
 def html_doc(body_content, extra_style=""):
     return f"""<!DOCTYPE html>
@@ -31,6 +35,12 @@ def html_doc(body_content, extra_style=""):
     {body_content}
 </body>
 </html>"""
+
+
+def _date_str():
+    now = datetime.now()
+    weekday = WEEKDAYS[now.weekday()]
+    return f"{now.strftime('%Y년 %m월 %d일')} ({weekday})"
 
 
 # ── Card 1: Hook ──────────────────────────────────────────────────────────────
@@ -108,14 +118,14 @@ def build_card1_hook(analysis):
         ">{subtext}</div>
     </div>
 
-    <!-- 하단: 스와이프 안내 -->
+    <!-- 하단: 날짜 및 스와이프 안내 -->
     <div style="
         display:flex; align-items:center; justify-content:space-between;
         position:relative; z-index:1;
         border-top:1px solid rgba(255,255,255,0.08); padding-top:36px;
     ">
-        <div style="color:rgba(255,255,255,0.35); font-size:15px;">
-            {datetime.now().strftime("%Y년 %m월 %d일")}
+        <div style="color:rgba(255,255,255,0.45); font-size:16px; font-weight:500;">
+            {_date_str()}
         </div>
         <div style="
             display:flex; align-items:center; gap:10px;
@@ -129,11 +139,10 @@ def build_card1_hook(analysis):
 
 
 # ── Card 2: Summary ───────────────────────────────────────────────────────────
-def build_card2_summary(analysis):
+def build_card2_summary(analysis, total_cards):
     points = analysis.get("key_points", [])
     count  = len(points)
 
-    # 개수에 따라 폰트/패딩 조절
     if count <= 4:
         font_size, padding_v, num_size = 30, 40, 52
     elif count <= 6:
@@ -142,9 +151,8 @@ def build_card2_summary(analysis):
         font_size, padding_v, num_size = 22, 20, 38
 
     items_html = ""
-    colors = ["#00D4AA", "#4DA6FF", "#FF6B53", "#A78BFA", "#FBBF24", "#34D399", "#F472B6", "#60A5FA"]
     for i, p in enumerate(points):
-        c = colors[i % len(colors)]
+        c = ACCENT_COLORS[i % len(ACCENT_COLORS)]
         items_html += f"""
         <div style="
             display:flex; align-items:flex-start; gap:24px;
@@ -190,16 +198,17 @@ def build_card2_summary(analysis):
         display:flex; justify-content:space-between; align-items:center;
     ">
         <div style="color:rgba(255,255,255,0.3); font-size:14px; letter-spacing:1px;">MARKET BRIEF</div>
-        <div style="color:rgba(255,255,255,0.3); font-size:14px;">2 / 6</div>
+        <div style="color:rgba(255,255,255,0.3); font-size:14px;">2 / {total_cards}</div>
     </div>
 </div>""")
 
 
-# ── Card 3-5: Detail ──────────────────────────────────────────────────────────
-def build_detail_card(detail, card_num=3):
+# ── Detail Card ────────────────────────────────────────────────────────────────
+def build_detail_card(detail, card_num, total_cards, detail_idx):
     title   = detail.get("title", "")
     summary = detail.get("summary", "")
     bullets = detail.get("bullets", [])
+    accent  = ACCENT_COLORS[detail_idx % len(ACCENT_COLORS)]
 
     bullets_html = ""
     for b in bullets:
@@ -210,14 +219,11 @@ def build_detail_card(detail, card_num=3):
         ">
             <div style="
                 min-width:8px; height:8px; border-radius:50%;
-                background:#FF6B53; margin-top:14px;
+                background:{accent}; margin-top:14px;
             "></div>
             <div style="font-size:27px; color:rgba(255,255,255,0.8); line-height:1.65; word-break:keep-all; font-weight:400;">{b}</div>
         </div>
         """
-
-    accent_colors = {3: "#FF6B53", 4: "#A78BFA", 5: "#FBBF24"}
-    accent = accent_colors.get(card_num, "#00D4AA")
 
     return html_doc(f"""
 <div style="
@@ -237,9 +243,9 @@ def build_detail_card(detail, card_num=3):
             padding:8px 20px; border-radius:100px;
             background:{accent}22; border:1px solid {accent}55;
             color:{accent}; font-size:15px; font-weight:700; letter-spacing:1px;
-        ">DETAIL {card_num - 1}</div>
+        ">DETAIL {detail_idx + 1}</div>
         <div style="flex:1;height:1px;background:rgba(255,255,255,0.08);"></div>
-        <div style="color:rgba(255,255,255,0.3);font-size:14px;">{card_num} / 6</div>
+        <div style="color:rgba(255,255,255,0.3);font-size:14px;">{card_num} / {total_cards}</div>
     </div>
 
     <!-- 타이틀 -->
@@ -273,8 +279,8 @@ def build_detail_card(detail, card_num=3):
 </div>""")
 
 
-# ── Card 6: CTA ───────────────────────────────────────────────────────────────
-def build_card6_cta(cta):
+# ── CTA Card ──────────────────────────────────────────────────────────────────
+def build_cta_card(cta, total_cards):
     summary = cta.get("summary", "")
     action  = cta.get("action", "")
 
@@ -350,7 +356,7 @@ def build_card6_cta(cta):
             <div style="flex:1;height:1px;background:rgba(255,255,255,0.08);"></div>
         </div>
         <div style="text-align:center; color:rgba(255,255,255,0.3); font-size:14px;">
-            6 / 6 · MARKET BRIEF
+            {total_cards} / {total_cards} · MARKET BRIEF
         </div>
     </div>
 </div>""")
@@ -367,14 +373,13 @@ def generate_all_cards(result, output_dir="output"):
     details  = result.get("details", [])
     cta      = result.get("cta", {})
 
-    cards = [
-        build_card1_hook(analysis),
-        build_card2_summary(analysis),
-        build_detail_card(details[0], card_num=3),
-        build_detail_card(details[1], card_num=4),
-        build_detail_card(details[2], card_num=5),
-        build_card6_cta(cta),
-    ]
+    # total = hook(1) + summary(1) + details(N) + cta(1)
+    total_cards = 2 + len(details) + 1
+
+    cards = [build_card1_hook(analysis), build_card2_summary(analysis, total_cards)]
+    for i, detail in enumerate(details):
+        cards.append(build_detail_card(detail, card_num=3 + i, total_cards=total_cards, detail_idx=i))
+    cards.append(build_cta_card(cta, total_cards))
 
     from playwright.sync_api import sync_playwright
 

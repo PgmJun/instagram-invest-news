@@ -15,26 +15,17 @@ def generate_market_content(data):
 절대 추상적으로 말하지 마라.
 JSON만 출력하고 다른 말 하지 마라.
 코드블럭 절대 쓰지 마라.
-key_points는 오늘 시장에서 중요한 포인트를 최소 3개, 최대 8개까지 뽑아라. 내용이 많으면 더 뽑아도 된다.
+key_points는 오늘 시장에서 중요한 포인트를 최소 3개, 최대 10개까지 뽑아라.
+details는 key_points와 반드시 같은 개수로 만들어라. 각 detail은 해당 key_point를 상세히 설명한다.
 
 형식:
 
 {{
   "analysis": {{
     "headline": "...",
-    "key_points": ["...", "...", "...", "..."]
+    "key_points": ["...", "...", "..."]
   }},
   "details": [
-    {{
-      "title": "...",
-      "summary": "...",
-      "bullets": ["...", "...", "..."]
-    }},
-    {{
-      "title": "...",
-      "summary": "...",
-      "bullets": ["...", "...", "..."]
-    }},
     {{
       "title": "...",
       "summary": "...",
