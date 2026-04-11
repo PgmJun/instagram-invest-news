@@ -22,19 +22,12 @@ def _ensure_gh_pages_branch(repo: str) -> None:
     if resp.status_code == 200:
         return
 
-    # 빈 트리 생성
-    tree = requests.post(
-        f"https://api.github.com/repos/{repo}/git/trees",
-        headers=h,
-        json={"tree": []},
-    )
-    tree.raise_for_status()
-
-    # orphan 커밋 생성
+    # Git 표준 빈 트리 SHA (4b825dc...)를 직접 사용해 orphan 커밋 생성
+    empty_tree_sha = "4b825dc642cb6eb9a060e54bf8d69288fbee4904"
     commit = requests.post(
         f"https://api.github.com/repos/{repo}/git/commits",
         headers=h,
-        json={"message": "Initialize gh-pages", "tree": tree.json()["sha"], "parents": []},
+        json={"message": "Initialize gh-pages", "tree": empty_tree_sha, "parents": []},
     )
     commit.raise_for_status()
 
