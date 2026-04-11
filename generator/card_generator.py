@@ -124,7 +124,7 @@ def build_card1_hook(analysis):
         position:relative; z-index:1;
         border-top:1px solid rgba(255,255,255,0.08); padding-top:36px;
     ">
-        <div style="color:rgba(255,255,255,0.45); font-size:16px; font-weight:500;">
+        <div style="color:rgba(255,255,255,0.75); font-size:26px; font-weight:700;">
             {_date_str()}
         </div>
         <div style="
