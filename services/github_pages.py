@@ -45,7 +45,7 @@ def _ensure_gh_pages_branch(repo: str) -> None:
         headers=h,
         json={"source": {"branch": "gh-pages", "path": "/"}},
     )
-    if pages.status_code not in (201, 409, 422):
+    if pages.status_code not in (201, 403, 409, 422):
         pages.raise_for_status()
 
 

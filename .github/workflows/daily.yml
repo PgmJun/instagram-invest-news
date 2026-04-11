@@ -9,7 +9,8 @@ jobs:
   post:
     runs-on: ubuntu-latest
     permissions:
-      contents: write  # Release 생성에 필요
+      contents: write  # gh-pages 브랜치 푸시에 필요
+      pages: write     # GitHub Pages 활성화에 필요
 
     steps:
       - uses: actions/checkout@v4
