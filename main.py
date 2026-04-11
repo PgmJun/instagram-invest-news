@@ -25,7 +25,7 @@ def main():
     print("🖼️ 카드 생성 중...")
     images = generate_all_cards(result)
 
-    print("📤 GitHub Release 업로드 중...")
+    print("📤 GitHub Pages 업로드 중...")
     image_urls = upload_images_to_pages(images)
 
     print("📱 Instagram 업로드 중...")

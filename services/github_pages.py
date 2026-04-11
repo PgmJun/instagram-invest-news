@@ -101,7 +101,7 @@ def _upload_image(repo: str, file_path: str, folder: str) -> str:
     resp.raise_for_status()
 
     owner, repo_name = repo.split("/")
-    return f"https://{owner}.github.io/{repo_name}/{content_path}"
+    return f"https://{owner.lower()}.github.io/{repo_name}/{content_path}"
 
 
 def upload_images_to_pages(image_paths: list[str]) -> list[str]:
