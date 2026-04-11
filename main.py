@@ -1,7 +1,7 @@
 from services.market_data import get_market_data
 from services.claude import generate_market_content
 from generator.card_generator import generate_all_cards
-from services.github_release import create_release_and_upload
+from services.github_pages import upload_images_to_pages
 from services.instagram import upload_carousel, post_comment, post_reply
 
 HASHTAGS = (
@@ -26,7 +26,7 @@ def main():
     images = generate_all_cards(result)
 
     print("📤 GitHub Release 업로드 중...")
-    image_urls = create_release_and_upload(images)
+    image_urls = upload_images_to_pages(images)
 
     print("📱 Instagram 업로드 중...")
     caption = build_caption(result)
