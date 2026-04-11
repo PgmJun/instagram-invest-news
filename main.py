@@ -4,10 +4,16 @@ from generator.card_generator import generate_all_cards
 from services.github_pages import upload_images_to_pages
 from services.instagram import upload_carousel, post_comment, post_reply
 
-HASHTAGS = (
+BASE_HASHTAGS = (
     "#주식 #재테크 #코스피 #나스닥 #미국주식 #주식투자 "
     "#경제 #투자 #시장분석 #글로벌시장 #MarketBrief #오늘의주식"
 )
+
+
+def build_hashtags(result: dict) -> str:
+    dynamic = result.get("hashtags", [])
+    extra = " ".join(dynamic)
+    return f"{BASE_HASHTAGS} {extra}".strip()
 
 
 def build_caption(result: dict) -> str:
@@ -33,7 +39,7 @@ def main():
     media_id = upload_carousel(image_urls, caption)
 
     comment_id = post_comment(media_id, "📈")
-    post_reply(comment_id, HASHTAGS)
+    post_reply(comment_id, build_hashtags(result))
 
     print("✅ 완료!")
 
