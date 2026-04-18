@@ -1,15 +1,11 @@
 import base64
 import logging
-from google import genai
-from config.settings import settings
+import urllib.parse
+import urllib.request
 
 logger = logging.getLogger(__name__)
 
-if settings.GEMINI_API_KEY:
-    imagen_client = genai.Client(api_key=settings.GEMINI_API_KEY)
-else:
-    imagen_client = None
-    logger.warning("GEMINI_API_KEY 없음 — AI 썸네일 비활성화")
+POLLINATIONS_URL = "https://image.pollinations.ai/prompt/{prompt}?width=1080&height=1350&nologo=true&model=flux"
 
 
 def _build_prompt(analysis: dict) -> str:
@@ -27,20 +23,15 @@ def _build_prompt(analysis: dict) -> str:
 
 
 def generate_thumbnail_background(analysis: dict) -> str | None:
-    if imagen_client is None:
-        logger.warning("Gemini 클라이언트 없음 — 폴백 배경 사용")
-        return None
-
     prompt = _build_prompt(analysis)
+    encoded = urllib.parse.quote(prompt)
+    url = POLLINATIONS_URL.format(prompt=encoded)
 
     try:
-        response = imagen_client.models.generate_images(
-            model="imagen-3.0-generate-002",
-            prompt=prompt,
-            config={"number_of_images": 1, "aspect_ratio": "4:5"},
-        )
-        image_bytes = response.generated_images[0].image.image_bytes
+        req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
+        with urllib.request.urlopen(req, timeout=60) as resp:
+            image_bytes = resp.read()
         return base64.b64encode(image_bytes).decode()
     except Exception as e:
-        logger.warning(f"Gemini 이미지 생성 실패 — 폴백 배경 사용: {e}")
+        logger.warning(f"AI 이미지 생성 실패 — 폴백 배경 사용: {e}")
         return None

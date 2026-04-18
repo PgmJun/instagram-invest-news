@@ -9,7 +9,8 @@ def test_build_prompt_contains_headline():
         "key_points": ["테슬라 10% 상승", "Fed 금리 동결"]
     }
     prompt = _build_prompt(analysis)
-    assert "Tesla" in prompt or "테슬라" in prompt or "Nasdaq" in prompt or len(prompt) > 20
+    assert "테슬라 급등" in prompt or "나스닥" in prompt
+    assert len(prompt) > 20
 
 
 def test_generate_returns_base64_on_success():
@@ -21,14 +22,12 @@ def test_generate_returns_base64_on_success():
     fake_image_bytes = b"fake_png_bytes"
     fake_b64 = base64.b64encode(fake_image_bytes).decode()
 
-    mock_image = MagicMock()
-    mock_image.image.image_bytes = fake_image_bytes
+    mock_resp = MagicMock()
+    mock_resp.read.return_value = fake_image_bytes
+    mock_resp.__enter__ = lambda s: s
+    mock_resp.__exit__ = MagicMock(return_value=False)
 
-    mock_response = MagicMock()
-    mock_response.generated_images = [mock_image]
-
-    with patch("services.gemini_image.imagen_client") as mock_client:
-        mock_client.models.generate_images.return_value = mock_response
+    with patch("urllib.request.urlopen", return_value=mock_resp):
         result = generate_thumbnail_background(analysis)
 
     assert result == fake_b64
@@ -37,17 +36,7 @@ def test_generate_returns_base64_on_success():
 def test_generate_returns_none_on_exception():
     analysis = {"headline": "테슬라", "key_points": []}
 
-    with patch("services.gemini_image.imagen_client") as mock_client:
-        mock_client.models.generate_images.side_effect = Exception("API error")
-        result = generate_thumbnail_background(analysis)
-
-    assert result is None
-
-
-def test_generate_returns_none_when_no_api_key():
-    analysis = {"headline": "테슬라", "key_points": []}
-
-    with patch("services.gemini_image.imagen_client", None):
+    with patch("urllib.request.urlopen", side_effect=Exception("network error")):
         result = generate_thumbnail_background(analysis)
 
     assert result is None
