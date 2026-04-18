@@ -1,5 +1,5 @@
 from pathlib import Path
-from datetime import datetime
+from datetime import datetime, timezone, timedelta
 import os
 
 
@@ -38,7 +38,8 @@ def html_doc(body_content, extra_style=""):
 
 
 def _date_str():
-    now = datetime.now()
+    kst = timezone(timedelta(hours=9))
+    now = datetime.now(kst)
     weekday = WEEKDAYS[now.weekday()]
     return f"{now.strftime('%Y년 %m월 %d일')} ({weekday})"
 
