@@ -45,20 +45,36 @@ def _date_str():
 
 
 # ── Card 1: Hook ──────────────────────────────────────────────────────────────
-def build_card1_hook(analysis):
+def build_card1_hook(analysis, bg_image_b64=None):
     headline = analysis.get("headline", "")
     subtext  = analysis.get("subtext", "오늘의 글로벌 시장 핵심 요약")
+
+    if bg_image_b64:
+        background_style = (
+            f"background-image: url('data:image/jpeg;base64,{bg_image_b64}');"
+            "background-size: cover; background-position: center;"
+        )
+        overlay_style = (
+            "position:absolute; inset:0;"
+            "background: linear-gradient(160deg, rgba(6,13,31,0.75) 0%, rgba(13,31,60,0.65) 50%, rgba(9,20,40,0.75) 100%);"
+        )
+    else:
+        background_style = "background: linear-gradient(160deg, #060D1F 0%, #0D1F3C 50%, #091428 100%);"
+        overlay_style = ""
+
+    overlay_div = f'<div style="{overlay_style}"></div>' if overlay_style else ""
 
     return html_doc(f"""
 <div style="
     width:1080px; height:1350px;
-    background: linear-gradient(160deg, #060D1F 0%, #0D1F3C 50%, #091428 100%);
+    {background_style}
     display:flex; flex-direction:column;
     justify-content:space-between;
     padding: 80px 72px;
     position:relative;
     overflow:hidden;
 ">
+    {overlay_div}
     <!-- 배경 장식 원 -->
     <div style="
         position:absolute; top:-120px; right:-120px;
@@ -364,7 +380,7 @@ def build_cta_card(cta, total_cards):
 
 
 # ── Main ──────────────────────────────────────────────────────────────────────
-def generate_all_cards(result, output_dir="output"):
+def generate_all_cards(result, output_dir="output", bg_image_b64=None):
     os.makedirs(output_dir, exist_ok=True)
 
     ts = datetime.now().strftime("%Y%m%d_%H%M")
@@ -377,7 +393,7 @@ def generate_all_cards(result, output_dir="output"):
     # total = hook(1) + summary(1) + details(N) + cta(1)
     total_cards = 2 + len(details) + 1
 
-    cards = [build_card1_hook(analysis), build_card2_summary(analysis, total_cards)]
+    cards = [build_card1_hook(analysis, bg_image_b64=bg_image_b64), build_card2_summary(analysis, total_cards)]
     for i, detail in enumerate(details):
         cards.append(build_detail_card(detail, card_num=3 + i, total_cards=total_cards, detail_idx=i))
     cards.append(build_cta_card(cta, total_cards))
