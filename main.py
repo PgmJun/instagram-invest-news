@@ -1,5 +1,6 @@
 from services.market_data import get_market_data
 from services.claude import generate_market_content
+from services.gemini_image import generate_thumbnail_background
 from generator.card_generator import generate_all_cards
 from services.github_pages import upload_images_to_pages
 from services.instagram import upload_carousel, post_comment, post_reply
@@ -28,8 +29,15 @@ def main():
 
     result = generate_market_content(data)
 
+    print("🎨 AI 썸네일 배경 생성 중...")
+    bg_image_b64 = generate_thumbnail_background(result["analysis"])
+    if bg_image_b64:
+        print("✅ AI 배경 이미지 생성 완료")
+    else:
+        print("⚠️ AI 배경 생성 실패 — 기본 배경 사용")
+
     print("🖼️ 카드 생성 중...")
-    images = generate_all_cards(result)
+    images = generate_all_cards(result, bg_image_b64=bg_image_b64)
 
     print("📤 GitHub Pages 업로드 중...")
     image_urls = upload_images_to_pages(images)
