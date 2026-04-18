@@ -8,7 +8,10 @@ logger = logging.getLogger(__name__)
 POLLINATIONS_URL = "https://image.pollinations.ai/prompt/{prompt}?width=1080&height=1350&nologo=true&model=flux"
 
 
-def _build_prompt(analysis: dict) -> str:
+def _build_prompt(analysis: dict, image_prompt: str = "") -> str:
+    if image_prompt:
+        return image_prompt
+
     headline = analysis.get("headline", "financial market")
     key_points = analysis.get("key_points", [])
     points_str = ", ".join(key_points[:3]) if key_points else ""
@@ -16,14 +19,13 @@ def _build_prompt(analysis: dict) -> str:
     return (
         f"Cinematic financial market background image: {headline}. "
         f"Key themes: {points_str}. "
-        "Dark navy blue and teal color palette, abstract stock market charts, "
-        "data visualization, glowing light streaks, professional photography, "
-        "no text, no letters, no numbers, ultra HD, 4K, dramatic lighting"
+        "Abstract stock market charts, data visualization, glowing light streaks, "
+        "professional photography, no text, no letters, no numbers, ultra HD, 4K, dramatic lighting"
     )
 
 
-def generate_thumbnail_background(analysis: dict) -> str | None:
-    prompt = _build_prompt(analysis)
+def generate_thumbnail_background(analysis: dict, image_prompt: str = "") -> str | None:
+    prompt = _build_prompt(analysis, image_prompt)
     encoded = urllib.parse.quote(prompt)
     url = POLLINATIONS_URL.format(prompt=encoded)
 

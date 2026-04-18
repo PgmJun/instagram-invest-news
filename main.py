@@ -30,7 +30,7 @@ def main():
     result = generate_market_content(data)
 
     print("🎨 AI 썸네일 배경 생성 중...")
-    bg_image_b64 = generate_thumbnail_background(result["analysis"])
+    bg_image_b64 = generate_thumbnail_background(result["analysis"], result.get("image_prompt", ""))
     if bg_image_b64:
         print("✅ AI 배경 이미지 생성 완료")
     else:
