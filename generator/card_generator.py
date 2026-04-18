@@ -102,8 +102,8 @@ def build_card1_hook(analysis, bg_image_b64=None):
             font-size:24px;
         ">📈</div>
         <div>
-            <div style="color:#00D4AA; font-size:18px; font-weight:700; letter-spacing:2px;">MARKET BRIEF</div>
-            <div style="color:rgba(255,255,255,0.45); font-size:13px; letter-spacing:1px;">TODAY'S KEY INSIGHTS</div>
+            <div style="color:#00D4AA; font-size:26px; font-weight:700; letter-spacing:2px;">MARKET BRIEF</div>
+            <div style="color:rgba(255,255,255,0.45); font-size:17px; letter-spacing:1px;">TODAY'S KEY INSIGHTS</div>
         </div>
     </div>
 
@@ -113,7 +113,7 @@ def build_card1_hook(analysis, bg_image_b64=None):
             display:inline-block; width:fit-content;
             background:rgba(0,212,170,0.15); border:1px solid rgba(0,212,170,0.3);
             border-radius:100px; padding:10px 24px; margin-bottom:40px;
-            color:#00D4AA; font-size:16px; font-weight:500; letter-spacing:1px;
+            color:#00D4AA; font-size:22px; font-weight:500; letter-spacing:1px;
         ">🔥 오늘의 핵심</div>
 
         <div style="
@@ -141,15 +141,15 @@ def build_card1_hook(analysis, bg_image_b64=None):
         position:relative; z-index:1;
         border-top:1px solid rgba(255,255,255,0.08); padding-top:36px;
     ">
-        <div style="color:rgba(255,255,255,0.75); font-size:26px; font-weight:700;">
+        <div style="color:rgba(255,255,255,0.75); font-size:34px; font-weight:700;">
             {_date_str()}
         </div>
         <div style="
             display:flex; align-items:center; gap:10px;
-            color:rgba(255,255,255,0.5); font-size:15px;
+            color:rgba(255,255,255,0.5); font-size:22px;
         ">
             <span>스와이프해서 확인</span>
-            <span style="color:#00D4AA; font-size:20px;">→</span>
+            <span style="color:#00D4AA; font-size:28px;">→</span>
         </div>
     </div>
 </div>""")
