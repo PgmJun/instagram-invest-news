@@ -49,8 +49,9 @@ def main():
     comment_id = post_comment(media_id, "📈")
     post_reply(comment_id, build_hashtags(result))
 
-    print("📖 스토리 공유 중...")
-    share_post_to_story(media_id)
+    print("📖 스토리 업로드 중...")
+    for url in image_urls:
+        share_post_to_story(url)
 
     print("✅ 완료!")
 

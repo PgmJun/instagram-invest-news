@@ -52,12 +52,12 @@ def post_reply(comment_id: str, text: str) -> str:
     return data["id"]
 
 
-def share_post_to_story(media_id: str) -> str:
-    """피드 게시물을 스토리로 공유하고 media ID를 반환."""
+def share_post_to_story(image_url: str) -> str:
+    """이미지를 스토리로 게시하고 media ID를 반환."""
     user_id = os.environ["INSTAGRAM_USER_ID"]
 
     container = _post(f"{user_id}/media", {
-        "source_media_id": media_id,
+        "image_url": image_url,
         "media_type": "STORIES",
     })
 
