@@ -3,7 +3,7 @@ from services.claude import generate_market_content
 from services.gemini_image import generate_thumbnail_background
 from generator.card_generator import generate_all_cards
 from services.github_pages import upload_images_to_pages
-from services.instagram import upload_carousel, post_comment, post_reply
+from services.instagram import upload_carousel, post_comment, post_reply, share_post_to_story
 
 BASE_HASHTAGS = (
     "#주식 #재테크 #코스피 #나스닥 #미국주식 #주식투자 "
@@ -48,6 +48,9 @@ def main():
 
     comment_id = post_comment(media_id, "📈")
     post_reply(comment_id, build_hashtags(result))
+
+    print("📖 스토리 공유 중...")
+    share_post_to_story(media_id)
 
     print("✅ 완료!")
 

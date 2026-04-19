@@ -50,3 +50,21 @@ def post_reply(comment_id: str, text: str) -> str:
     """댓글에 대댓글을 달고 reply ID를 반환."""
     data = _post(f"{comment_id}/replies", {"message": text})
     return data["id"]
+
+
+def share_post_to_story(media_id: str) -> str:
+    """피드 게시물을 스토리로 공유하고 media ID를 반환."""
+    user_id = os.environ["INSTAGRAM_USER_ID"]
+
+    container = _post(f"{user_id}/media", {
+        "source_media_id": media_id,
+        "media_type": "STORIES",
+    })
+
+    time.sleep(3)
+
+    published = _post(f"{user_id}/media_publish", {
+        "creation_id": container["id"],
+    })
+
+    return published["id"]
