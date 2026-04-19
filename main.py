@@ -1,7 +1,7 @@
 from services.market_data import get_market_data
 from services.claude import generate_market_content
 from services.gemini_image import generate_thumbnail_background
-from generator.card_generator import generate_all_cards
+from generator.card_generator import generate_all_cards, make_story_images
 from services.github_pages import upload_images_to_pages
 from services.instagram import upload_carousel, post_comment, post_reply, share_post_to_story
 
@@ -40,7 +40,9 @@ def main():
     images = generate_all_cards(result, bg_image_b64=bg_image_b64)
 
     print("📤 GitHub Pages 업로드 중...")
+    story_images = make_story_images(images)
     image_urls = upload_images_to_pages(images)
+    story_urls = upload_images_to_pages(story_images)
 
     print("📱 Instagram 업로드 중...")
     caption = build_caption(result)
@@ -50,7 +52,7 @@ def main():
     post_reply(comment_id, build_hashtags(result))
 
     print("📖 스토리 업로드 중...")
-    for url in image_urls:
+    for url in story_urls:
         share_post_to_story(url)
 
     print("✅ 완료!")

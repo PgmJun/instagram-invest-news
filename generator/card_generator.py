@@ -418,3 +418,20 @@ def generate_all_cards(result, output_dir="output", bg_image_b64=None):
         browser.close()
 
     return results
+
+
+def make_story_images(card_paths: list[str]) -> list[str]:
+    """1080×1350 카드를 1080×1920 스토리 사이즈로 패딩해 반환."""
+    from PIL import Image as PILImage
+
+    story_paths = []
+    for path in card_paths:
+        img = PILImage.open(path)
+        canvas = PILImage.new("RGB", (1080, 1920), (6, 13, 31))
+        top = (1920 - 1350) // 2
+        canvas.paste(img, (0, top))
+        story_path = path.replace(".png", "_story.png")
+        canvas.save(story_path)
+        story_paths.append(story_path)
+
+    return story_paths
