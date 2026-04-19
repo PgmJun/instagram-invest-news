@@ -18,7 +18,7 @@ JSON만 출력하고 다른 말 하지 마라.
 key_points는 오늘 시장에서 중요한 포인트를 최소 3개, 최대 10개까지 뽑아라.
 details는 key_points와 반드시 같은 개수로 만들어라. 각 detail은 해당 key_point를 상세히 설명한다.
 hashtags는 오늘 콘텐츠 내용에 딱 맞는 한국어/영어 해시태그를 5~10개 뽑아라. # 포함해서 작성하고 기본 해시태그(주식, 재테크, 경제 등)는 제외하고 오늘 뉴스에 특화된 것만 넣어라. 예: #테슬라 #금리인상 #반도체 #엔화약세 #FOMC
-image_prompt는 오늘 뉴스의 핵심 주제를 반영한 AI 이미지 생성용 영어 프롬프트다. 구체적인 사물/브랜드/장소를 포함해라. 예: 테슬라 뉴스면 "Tesla electric car on futuristic highway", 반도체면 "semiconductor chip close-up with circuit board", 금리면 "Federal Reserve building with dollar signs". 스타일은 항상 "cinematic, professional photography, no text, no letters, ultra HD, 4K, dramatic lighting" 로 끝내라.
+image_prompt는 오늘 뉴스의 핵심 주제를 반영한 AI 이미지 생성용 영어 프롬프트다. 구체적인 사물/브랜드/장소를 포함해라. 예: 테슬라 뉴스면 Tesla electric car on futuristic highway, 반도체면 semiconductor chip close-up with circuit board, 금리면 Federal Reserve building with dollar signs. 스타일은 항상 cinematic, professional photography, no text, no letters, ultra HD, 4K, dramatic lighting 으로 끝내라. image_prompt 값 안에 절대 큰따옴표(")를 쓰지 마라.
 
 형식:
 
